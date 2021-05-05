@@ -40,7 +40,7 @@ $./zap -A <username>
 
 
 
-The above command deletes all logs whose username is <username>.
+The above command deletes all logs whose username is \<username\>.
 
 ##### check wtmp/utmp
 
@@ -146,7 +146,7 @@ $./zap -a <username> -t <tty> -d <mmddyy>
 
 ** mmddyy : mondth day year... ex, 2021.05.04 -> 050421
 
-The above command deletes the log whose username is <username>, tty is <tty>  and time is <mmddyy>.
+The above command deletes the log whose username is \<username\>, tty is \<tty\>  and time is \<mmddyy\>.
 
 
 
@@ -255,7 +255,7 @@ $./zap -R <username1> <username2> -t <tty1> <tty2> -d <mmddyy1> <mmddyy2>
 
 ** mmddyy : mondth day year... ex, 2021.05.04 -> 050421
 
-The above command modify the log whose username is <username1>, tty is <tty1>  and time is <mmddyy1> to <username2>, <tty2>, <mmddyy2>.
+The above command modify the log whose username is \<username1\>, tty is \<tty1\>  and time is \<mmddyy1\> to \<username2\>, \<tty2\>, \<mmddyy2\>.
 
 
 
