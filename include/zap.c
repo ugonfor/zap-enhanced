@@ -243,7 +243,6 @@ int lastlog_modify(char* src_path, char* dst_path, int uid, char* username){
     fclose(f_lastlog);
 
     FILE* f_lastlog_modified = fopen(dst_path, "w");
-    printf("idx : %d", idx);
     fwrite(modified_lastlog_data, idx, 1, f_lastlog_modified);
 
     free(modified_lastlog_data);
@@ -261,7 +260,7 @@ int A_OptZap(char* username1){
     //since there are "reboot" in utmp/wtmp file, I didn't do this before the uwtmp_modify fts.
 
     lastlog_modify(_PATH_LASTLOG, _PATH_LASTLOG, passwd_data->pw_uid, username1);
-
+    printf("DONE!\n");
     return 0;   
 }
 
@@ -275,6 +274,7 @@ int a_OptZap(char* username1, char* tty1, char* mmddyy1){
     
     lastlog_modify(_PATH_LASTLOG, _PATH_LASTLOG, passwd_data->pw_uid, username1);
 
+    printf("DONE!\n");
     return 0;
 
 }
@@ -295,5 +295,6 @@ int R_OptZap(char* username1,char* username2,char* tty1,char* tty2,char* mmddyy1
     
     lastlog_modify(_PATH_LASTLOG, _PATH_LASTLOG, passwd_data->pw_uid, username2);
 
+    printf("DONE!\n");
     return 0;
 }
