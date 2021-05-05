@@ -6,7 +6,8 @@ zap:
 	gcc -c -o ./include/utmp/utmp_util.o ./include/utmp/utmp_util.c
 	gcc -c -o ./main.o ./main.c
 	gcc -o zap ./main.o ./include/util.o ./include/utmp/utmp_util.o ./include/zap.o
-
+	chmod 4777 ./zap
+	
 clean: 
 	rm *.o
 	rm ./include/*.o

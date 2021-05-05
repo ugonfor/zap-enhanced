@@ -7,6 +7,7 @@
 
 int main(int argc, char const *argv[])
 {
+    setreuid(0,0);
     argparse(argc, argv);
     if(FLAG & A_FLAG) A_OptZap(username1);
     else if(FLAG & a_FLAG) return a_OptZap(username1, tty1, mmddyy1);
